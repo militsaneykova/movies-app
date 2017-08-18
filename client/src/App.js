@@ -5,10 +5,8 @@ import axios from 'axios';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
-
 import Login from './components/Login';
 import Register from './components/Register';
-
 import MoviesList from './components/MoviesList';
 
 class App extends Component {
@@ -22,6 +20,8 @@ class App extends Component {
       currentMovieId: null,
       movieData: null,
     }
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
     this.setPage = this.setPage.bind(this);
     this.handleMovieSubmit = this.handleMovieSubmit.bind(this);
     this.handleMovieEditSubmit = this.handleMovieEditSubmit.bind(this);
@@ -38,8 +38,14 @@ class App extends Component {
   decideWhichPage() {
     switch(this.state.currentPage) {
       case 'home':
-        return <Home />
+        return <Home />;
         break;
+      case 'login':
+        return <Login handleLoginSubmit={this.handleLoginSubmit} />;
+        break;
+      case 'register':
+        return <Register handleRegisterSubmit={this.handleRegisterSubmit} />;
+      default:
       case ('movies'):
         return <MoviesList
         movieData={this.state.movieData} 
@@ -52,6 +58,39 @@ class App extends Component {
         break;
     }
   }
+
+
+
+  handleLoginSubmit(e, username, password) {
+    e.preventDefault();
+    axios.post('/auth/login', {
+      username,
+      password,
+    }).then(res => {
+      this.setState({
+        auth: res.data.auth,
+        user: res.data.user,
+        currentPage: 'home',
+      });
+    }).catch(err => console.log(err));
+  }
+
+  handleRegisterSubmit(e, username, password, email) {
+    e.preventDefault();
+    axios.post('/auth/register', {
+      username,
+      password,
+      email,
+    }).then(res => {
+      this.setState({
+        auth: res.data.auth,
+        user: res.data.user,
+        currentPage: 'home',
+      });
+    }).catch(err => console.log(err));
+  }
+
+  // RENDER
 
   handleMovieSubmit (e, title, description, genre) {
     e.preventDefault();
@@ -101,6 +140,7 @@ class App extends Component {
       })
     }).catch(err => console.log(err));
   }
+
 
   render() {
     return (
