@@ -6,7 +6,7 @@ const Movie = (props) => {
             <h3>{props.title}</h3>
             <p>{props.movie.description}</p>
             <p>Genre: {props.movie.genre}</p>
-            
+            <span className='edit' onClick={() => props.selectEditedMovie(props.movie.id)}>Edit</span>
         </div>
     )
 }
