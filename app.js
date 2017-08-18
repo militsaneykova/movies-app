@@ -31,13 +31,15 @@ app.listen(PORT,()=>{
     console.log(`Listening on port ${PORT}`);
 });
 //Routes
-// app.get('/', (req,res) =>{
-//     res.sendFile(path.join(__dirname,'client', 'build', 'index.html'));
-// })
-// const authRoutes = require('./routes/auth-routes');
-// app.use('/auth',authRoutes);
-// const movieRoutes = require('./routes/movie-routes');
-// app.use('/movies',movieRoutes);
+app.get('/', (req,res) =>{
+    res.sendFile(path.join(__dirname,'client', 'build', 'index.html'));
+})
+const authRoutes = require('./routes/auth-routes');
+app.use('/auth',authRoutes);
+const movieRoutes = require('./routes/movie-routes');
+app.use('/movies',movieRoutes);
+const userRoutes = require('./routes/user-routes');
+app.use('/user', userRoutes);
 
 //Error handler
 app.use('*',(req,res)=>{
