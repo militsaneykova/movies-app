@@ -36,8 +36,8 @@ app.listen(PORT,()=>{
 // })
 // const authRoutes = require('./routes/auth-routes');
 // app.use('/auth',authRoutes);
-// const movieRoutes = require('./routes/movie-routes');
-// app.use('/movies',movieRoutes);
+const movieRoutes = require('./routes/movie-routes');
+app.use('/movies',movieRoutes);
 
 //Error handler
 app.use('*',(req,res)=>{
