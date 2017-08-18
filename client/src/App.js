@@ -39,10 +39,10 @@ class App extends Component {
     switch(this.state.currentPage) {
       case 'home':
         return <Home />;
-        break;
+        // break;
       case 'login':
         return <Login handleLoginSubmit={this.handleLoginSubmit} />;
-        break;
+        // break;
       case 'register':
         return <Register handleRegisterSubmit={this.handleRegisterSubmit} />;
       default:
@@ -53,9 +53,7 @@ class App extends Component {
         handleMovieEditSubmit={this.handleMovieEditSubmit}
         selectEditedMovie={this.selectEditedMovie}
         currentMovieId={this.state.currentMovieId} />;
-        break;
-        default:
-        break;
+        // break;
     }
   }
 
