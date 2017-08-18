@@ -1,3 +1,4 @@
+// Add dependencies
 const express = require('express');
 const logger = require('morgan');
 const path = require('path');
@@ -24,8 +25,25 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static('public'));
-
+// Set up Port 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
     console.log(`Listening on port ${PORT}`);
 });
+//Routes
+// app.get('/', (req,res) =>{
+//     res.sendFile(path.join(__dirname,'client', 'build', 'index.html'));
+// })
+// const authRoutes = require('./routes/auth-routes');
+// app.use('/auth',authRoutes);
+// const movieRoutes = require('./routes/movie-routes');
+// app.use('/movies',movieRoutes);
+
+//Error handler
+app.use('*',(req,res)=>{
+    res.status(400).json({
+        message: 'Not found!',
+    });
+});
+
+
