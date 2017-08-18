@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header';
-import Header from './components/Footer';
-import Header from './components/Home';
 import axios from 'axios';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+
+import Login from './components/Login';
+import Register from './components/Register';
+
+import MoviesList from './components/MoviesList';
 
 class App extends Component {
   constructor(props) {
@@ -13,10 +18,14 @@ class App extends Component {
     this.state = {
       auth: false,
       user: null,
-      currentPage: none,
+      currentPage: 'home',
       currentMovieId: null,
       movieData: null,
     }
+    this.setPage = this.setPage.bind(this);
+    this.handleMovieSubmit = this.handleMovieSubmit.bind(this);
+    this.handleMovieEditSubmit = this.handleMovieEditSubmit.bind(this);
+    this.selectEditedMovie = this.selectEditedMovie.bind(this);
   }
 
   setPage = page => {
@@ -32,7 +41,12 @@ class App extends Component {
         return <Home />
         break;
       case ('movies'):
-        return <MoviesList movieData={this.state.movieData} />; 
+        return <MoviesList
+        movieData={this.state.movieData} 
+        handleMovieSubmit={this.handleMovieSubmit}
+        handleMovieEditSubmit={this.handleMovieEditSubmit}
+        selectEditedMovie={this.selectEditedMovie}
+        currentMovieId={this.state.currentMovieId} />;
         break;
         default:
         break;
@@ -52,6 +66,23 @@ class App extends Component {
     })
   }
 
+  selectEditedMovie(id) {
+    this.setState({
+      currentMovieId: id,
+    })
+  }
+
+  handleMovieEditSubmit (e, title, description, genre) {
+    e.preventDefault();
+    axios.put(`/movies/${this.state.currentMovieId}`, {
+      title,
+      description,
+      genre,
+    }).then(res => {
+      this.resetMovies();
+    }).catch(err => console.log(err));
+  }
+
   componentDidMount() {
     axios.get('/movies')
     .then(res => {
@@ -66,6 +97,7 @@ class App extends Component {
     .then(res => {
       this.setState({
         movieData: res.data.data,
+        currentMovieId: null,
       })
     }).catch(err => console.log(err));
   }
@@ -73,7 +105,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header setPage={this.setPage} />
+        <Header setPage={this.setPage} logout={this.logout} />
         {this.decideWhichPage()}
         <Footer />
       </div>
