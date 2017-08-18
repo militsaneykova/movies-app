@@ -39,6 +39,19 @@ class App extends Component {
     }
   }
 
+  handleMovieSubmit (e, title, description, genre) {
+    e.preventDefault();
+    axios.post('/movies', {
+      title,
+      description,
+      genre,
+    }).then(res => {
+      this.resetMovies();
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
   componentDidMount() {
     axios.get('/movies')
     .then(res => {
